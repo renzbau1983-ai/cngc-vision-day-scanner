@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CNGC Vision Day Scanner</title>
+</head>
+
+<body>
+
+  <h1>CNGC Vision Day 2026</h1>
+
+  <h2>CHECK-IN</h2>
+
+  <p id="status">CAMERA TEST</p>
+
+  <video
+    id="camera"
+    autoplay
+    playsinline
+    style="width:100%; max-width:600px;">
+  </video>
+
+  <script>
+
+    const camera = document.getElementById("camera");
+    const status = document.getElementById("status");
+
+    async function startCamera() {
+
+      try {
+
+        const stream =
+          await navigator.mediaDevices.getUserMedia({
+            video: {
+              facingMode: {
+                ideal: "environment"
+              }
+            },
+            audio: false
+          });
+
+        camera.srcObject = stream;
+
+        status.innerHTML = "CAMERA READY";
+
+      } catch (error) {
+
+        console.error(error);
+
+        status.innerHTML =
+          "CAMERA ERROR: " + error.name;
+
+      }
+
+    }
+
+    startCamera();
+
+  </script>
+
+</body>
+</html>
