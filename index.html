@@ -23,6 +23,8 @@
 
   <script src="https://unpkg.com/html5-qrcode"></script>
 
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
 <script>
 
 const status = document.getElementById("status");
@@ -30,81 +32,109 @@ const status = document.getElementById("status");
 let qrScanner = null;
 let qrProcessing = false;
 
-function onScanSuccess(decodedText) {
+function onScanSuccess(decodedText, decodedResult) {
 
-  // Prevent multiple scans of the same QR
-  if (qrProcessing) return;
+    if (qrProcessing) return;
 
-  qrProcessing = true;
+    qrProcessing = true;
 
-  console.log("QR CODE:", decodedText);
+    console.log("QR CODE DETECTED:", decodedText);
 
-  status.innerHTML =
-    "QR DETECTED: " + decodedText;
-
-  // Stop scanning temporarily
-  if (qrScanner) {
+    status.innerHTML =
+        "QR DETECTED: " + decodedText;
 
     qrScanner.stop()
-      .then(function() {
+        .then(function() {
 
-        console.log("QR scanner stopped");
+            console.log("QR scanner stopped");
 
-      })
-      .catch(function(error) {
+        })
+        .catch(function(error) {
 
-        console.log("Scanner stop error:", error);
+            console.log("Scanner stop error:", error);
 
-      });
+        });
+}
 
-  }
+
+function onScanFailure(errorMessage) {
+
+    // Ignore normal QR detection failures.
+    // The scanner continues searching.
 
 }
 
-function onScanFailure(error) {
-
-  // Normal scanning failures are ignored.
-  // The scanner keeps looking for a QR code.
-
-}
 
 function startQRScanner() {
 
-  qrScanner = new Html5Qrcode("qr-reader");
+    console.log("Starting QR scanner...");
 
-  qrScanner.start(
-    {
-      facingMode: "environment"
-    },
-    {
-      fps: 10,
+    // Make sure the library loaded
+    if (typeof Html5Qrcode === "undefined") {
 
-      qrbox: {
-        width: 250,
-        height: 250
-      }
-    },
+        status.innerHTML =
+            "QR LIBRARY FAILED TO LOAD";
 
-    onScanSuccess,
+        console.error("Html5Qrcode is not available.");
 
-    onScanFailure
+        return;
+    }
 
-  ).then(function() {
 
-    status.innerHTML = "READY — SCAN QR CODE";
+    qrScanner = new Html5Qrcode("qr-reader");
 
-  }).catch(function(error) {
 
-    console.error("QR CAMERA ERROR:", error);
+    const config = {
 
-    status.innerHTML =
-      "CAMERA ERROR: " + error;
+        fps: 10,
 
-  });
+        qrbox: {
+            width: 250,
+            height: 250
+        }
+
+    };
+
+
+    qrScanner.start(
+
+        { facingMode: "environment" },
+
+        config,
+
+        onScanSuccess,
+
+        onScanFailure
+
+    )
+    .then(function() {
+
+        console.log("QR CAMERA STARTED");
+
+        status.innerHTML =
+            "READY — SCAN QR CODE";
+
+    })
+    .catch(function(error) {
+
+        console.error(
+            "FULL QR CAMERA ERROR:",
+            error
+        );
+
+        status.innerHTML =
+            "CAMERA ERROR: " + error;
+
+    });
 
 }
 
-startQRScanner();
+
+window.addEventListener("load", function() {
+
+    startQRScanner();
+
+});
 
 </script>
 
