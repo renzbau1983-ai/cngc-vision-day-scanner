@@ -1,0 +1,1 @@
+# cngc-vision-day-scanner
