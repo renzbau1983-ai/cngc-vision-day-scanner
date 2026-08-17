@@ -21,43 +21,92 @@
      ">
 </div>
 
-  <script>
+  <script src="https://unpkg.com/html5-qrcode"></script>
 
-    const camera = document.getElementById("camera");
-    const status = document.getElementById("status");
+<script>
 
-    async function startCamera() {
+const status = document.getElementById("status");
 
-      try {
+let qrScanner = null;
+let qrProcessing = false;
 
-        const stream =
-          await navigator.mediaDevices.getUserMedia({
-            video: {
-              facingMode: {
-                ideal: "environment"
-              }
-            },
-            audio: false
-          });
+function onScanSuccess(decodedText) {
 
-        camera.srcObject = stream;
+  // Prevent multiple scans of the same QR
+  if (qrProcessing) return;
 
-        status.innerHTML = "CAMERA READY";
+  qrProcessing = true;
 
-      } catch (error) {
+  console.log("QR CODE:", decodedText);
 
-        console.error(error);
+  status.innerHTML =
+    "QR DETECTED: " + decodedText;
 
-        status.innerHTML =
-          "CAMERA ERROR: " + error.name;
+  // Stop scanning temporarily
+  if (qrScanner) {
 
+    qrScanner.stop()
+      .then(function() {
+
+        console.log("QR scanner stopped");
+
+      })
+      .catch(function(error) {
+
+        console.log("Scanner stop error:", error);
+
+      });
+
+  }
+
+}
+
+function onScanFailure(error) {
+
+  // Normal scanning failures are ignored.
+  // The scanner keeps looking for a QR code.
+
+}
+
+function startQRScanner() {
+
+  qrScanner = new Html5Qrcode("qr-reader");
+
+  qrScanner.start(
+    {
+      facingMode: "environment"
+    },
+    {
+      fps: 10,
+
+      qrbox: {
+        width: 250,
+        height: 250
       }
+    },
 
-    }
+    onScanSuccess,
 
-    startCamera();
+    onScanFailure
 
-  </script>
+  ).then(function() {
+
+    status.innerHTML = "READY — SCAN QR CODE";
+
+  }).catch(function(error) {
+
+    console.error("QR CAMERA ERROR:", error);
+
+    status.innerHTML =
+      "CAMERA ERROR: " + error;
+
+  });
+
+}
+
+startQRScanner();
+
+</script>
 
 </body>
 </html>
