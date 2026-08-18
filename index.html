@@ -449,6 +449,76 @@ body {
 
     }
 
+      /* ==========================================
+   CIRCULAR COUNTDOWN
+   ========================================== */
+
+.countdown-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+}
+
+.countdown-circle {
+    position: relative;
+    width: 130px;
+    height: 130px;
+}
+
+.countdown-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.countdown-track {
+    fill: none;
+    stroke: #dddddd;
+    stroke-width: 6;
+}
+
+.countdown-progress {
+    fill: none;
+    stroke: #c00000;
+    stroke-width: 6;
+    stroke-linecap: round;
+
+    stroke-dasharray: 276.46;
+    stroke-dashoffset: 0;
+
+    transition: stroke-dashoffset 1s linear;
+}
+
+.countdown-number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    text-align: center;
+}
+
+.countdown-number span {
+    display: block;
+
+    font-size: 38px;
+    font-weight: 700;
+
+    color: #c00000;
+}
+
+.countdown-number small {
+    display: block;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    color: #555;
+    letter-spacing: 1px;
+}
+
 
     .attendee-name {
 
@@ -581,6 +651,45 @@ body {
 
     </div>
 
+      <div id="countdown-container" class="countdown-container">
+
+    <div class="countdown-circle">
+
+        <svg class="countdown-svg"
+             viewBox="0 0 100 100">
+
+            <circle
+                class="countdown-track"
+                cx="50"
+                cy="50"
+                r="44">
+            </circle>
+
+            <circle
+                id="countdown-progress"
+                class="countdown-progress"
+                cx="50"
+                cy="50"
+                r="44">
+            </circle>
+
+        </svg>
+
+        <div class="countdown-number">
+
+            <span id="countdown-number">6</span>
+
+            <small>RESETTING</small>
+
+        </div>
+
+    </div>
+
+</div>
+
+      <!-- CIRCULAR COUNTDOWN -->
+
+<div id="countdown" class="countdown-container">
 
 </div>
 
@@ -599,6 +708,80 @@ const status =
 let qrScanner = null;
 
 let qrProcessing = false;
+
+      const countdownContainer =
+    document.getElementById("countdown-container");
+
+const countdownNumber =
+    document.getElementById("countdown-number");
+
+const countdownProgress =
+    document.getElementById("countdown-progress");
+
+      function startCountdown() {
+
+    let seconds = 6;
+
+    countdownContainer.style.display = "flex";
+
+    countdownNumber.textContent = seconds;
+
+    // Full circle
+    countdownProgress.style.strokeDashoffset = "0";
+
+    const circumference = 276.46;
+
+    const timer = setInterval(function() {
+
+        seconds--;
+
+        countdownNumber.textContent = seconds;
+
+        const progress =
+            circumference -
+            (circumference * (6 - seconds) / 6);
+
+        countdownProgress.style.strokeDashoffset =
+            progress;
+
+        if (seconds <= 0) {
+
+            clearInterval(timer);
+
+            countdownContainer.style.display = "none";
+
+            countdownNumber.textContent = "6";
+
+            countdownProgress.style.strokeDashoffset =
+                "0";
+
+            resetScanner();
+
+        }
+
+    }, 1000);
+
+}
+
+      function resetScanner() {
+
+    countdownContainer.style.display = "none";
+
+    countdownNumber.textContent = "6";
+
+    countdownProgress.style.strokeDashoffset = "0";
+
+    status.className =
+        "status-box ready";
+
+    status.innerHTML =
+        "WAITING FOR SCAN...";
+
+    qrProcessing = false;
+
+    startQRScanner();
+
+}
 
 
 
@@ -779,6 +962,7 @@ function onScanSuccess(decodedText, decodedResult) {
 
                 status.innerHTML = html;
 
+                  startCountdown();
 
             }
 
@@ -846,39 +1030,12 @@ function onScanSuccess(decodedText, decodedResult) {
                ALLOW NEXT SCAN
             ================================= */
 
-            let countdown = 6;
-
-const countdownInterval = setInterval(function() {
-
-    countdown--;
-
-    if (countdown > 0) {
-
-        status.innerHTML +=
-            "<br><br>" +
-            "<strong>Scanner ready in " +
-            countdown +
-            " seconds...</strong>";
-
-    }
-
-}, 1000);
-
-setTimeout(function() {
-
-    clearInterval(countdownInterval);
-
-    startQRScanner();
-
-}, 6000);
-
+            
 
 
             /* =================================
                RESTART CAMERA
             ================================= */
-
-            startQRScanner();
 
 
             delete window[callbackName];
