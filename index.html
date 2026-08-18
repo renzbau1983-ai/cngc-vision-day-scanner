@@ -1,154 +1,801 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CNGC Vision Day Scanner</title>
-</head>
 
-<body>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-  <h1>CNGC Vision Day 2026</h1>
-
-  <h2>CHECK-IN</h2>
-
-  <p id="status">CAMERA TEST</p>
-
-  <div id="qr-reader"
-     style="
-       width:100%;
-       max-width:600px;
-       margin:auto;
-     ">
-</div>
-
-  <script src="https://unpkg.com/html5-qrcode"></script>
+<title>CNGC Vision Day 2026 - Check-In</title>
 
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+
+    background: #f5f5f5;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    color: #444;
+
+}
+
+
+/* ==========================================
+   MAIN CONTAINER
+========================================== */
+
+.container {
+
+    width: 100%;
+
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    background: white;
+
+    min-height: 100vh;
+
+    padding: 30px 40px 50px;
+
+    text-align: center;
+
+}
+
+
+/* ==========================================
+   LOGO
+========================================== */
+
+.logo {
+
+    width: 150px;
+
+    max-width: 40%;
+
+    margin: 0 auto 10px;
+
+}
+
+
+/* ==========================================
+   CNGC TITLE
+========================================== */
+
+.title {
+
+    font-size: 58px;
+
+    font-weight: 700;
+
+    color: #c00000;
+
+    margin-top: 5px;
+
+    margin-bottom: 5px;
+
+}
+
+
+.subtitle {
+
+    font-size: 42px;
+
+    font-weight: 700;
+
+    color: #4f4f4f;
+
+    margin-top: 0;
+
+    margin-bottom: 35px;
+
+}
+
+
+/* ==========================================
+   CHECK-IN TITLE
+========================================== */
+
+.checkin-title {
+
+    font-size: 34px;
+
+    font-weight: 700;
+
+    color: #444;
+
+    margin-bottom: 35px;
+
+}
+
+
+/* ==========================================
+   CAMERA AREA
+========================================== */
+
+.scanner-container {
+
+    width: 70%;
+
+    max-width: 600px;
+
+    margin: 0 auto;
+
+    background: #111;
+
+    border-radius: 18px;
+
+    padding: 45px 30px;
+
+    border: 3px solid #333;
+
+}
+
+
+/*
+   html5-qrcode creates its own video.
+   We keep the camera area centered.
+*/
+
+#qr-reader {
+
+    width: 100%;
+
+    max-width: 520px;
+
+    margin: 0 auto;
+
+}
+
+
+/* ==========================================
+   HIDE DEFAULT LIBRARY TEXT
+========================================== */
+
+#qr-reader__dashboard_section_swaplink {
+
+    display: none !important;
+
+}
+
+#qr-reader__dashboard_section_csr {
+
+    display: none !important;
+
+}
+
+
+/* ==========================================
+   SCAN INSTRUCTION
+========================================== */
+
+.scan-instruction {
+
+    margin-top: 20px;
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    color: #555;
+
+}
+
+
+/* ==========================================
+   STATUS BOX
+========================================== */
+
+.status-box {
+
+    width: 90%;
+
+    max-width: 800px;
+
+    margin: 25px auto 0;
+
+    border: 3px solid #333;
+
+    border-radius: 14px;
+
+    padding: 25px;
+
+    min-height: 90px;
+
+    font-size: 28px;
+
+    font-weight: 500;
+
+    color: #777;
+
+    background: white;
+
+}
+
+
+/* ==========================================
+   READY STATUS
+========================================== */
+
+.ready {
+
+    color: #777;
+
+}
+
+
+/* ==========================================
+   SUCCESS
+========================================== */
+
+.success {
+
+    color: green;
+
+    font-weight: 700;
+
+}
+
+
+/* ==========================================
+   ERROR
+========================================== */
+
+.error {
+
+    color: #c00000;
+
+    font-weight: 700;
+
+}
+
+
+/* ==========================================
+   ATTENDEE INFORMATION
+========================================== */
+
+.attendee-name {
+
+    font-size: 30px;
+
+    font-weight: 700;
+
+    color: #222;
+
+    margin-top: 15px;
+
+}
+
+
+.attendee-info {
+
+    font-size: 24px;
+
+    color: #333;
+
+    margin-top: 8px;
+
+}
+
+
+.special-assistance {
+
+    font-size: 25px;
+
+    font-weight: 700;
+
+    color: #c00000;
+
+    margin-top: 12px;
+
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 700px) {
+
+    .container {
+
+        padding: 25px 15px 40px;
+
+    }
+
+
+    .logo {
+
+        width: 100px;
+
+    }
+
+
+    .title {
+
+        font-size: 40px;
+
+    }
+
+
+    .subtitle {
+
+        font-size: 28px;
+
+        margin-bottom: 25px;
+
+    }
+
+
+    .checkin-title {
+
+        font-size: 27px;
+
+        margin-bottom: 25px;
+
+    }
+
+
+    .scanner-container {
+
+        width: 100%;
+
+        padding: 25px 15px;
+
+        border-radius: 15px;
+
+    }
+
+
+    .scan-instruction {
+
+        font-size: 15px;
+
+    }
+
+
+    .status-box {
+
+        width: 100%;
+
+        font-size: 20px;
+
+        padding: 20px;
+
+    }
+
+
+    .attendee-name {
+
+        font-size: 25px;
+
+    }
+
+
+    .attendee-info {
+
+        font-size: 19px;
+
+    }
+
+
+    .special-assistance {
+
+        font-size: 20px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- =====================================
+         LOGO
+    ====================================== -->
+
+    <!--
+      If you have your CNGC logo URL,
+      we can put it here later.
+    -->
+
+    <div class="logo"></div>
+
+
+    <!-- =====================================
+         TITLE
+    ====================================== -->
+
+    <div class="title">
+
+        CNGC
+
+    </div>
+
+
+    <div class="subtitle">
+
+        VISION DAY 2026
+
+    </div>
+
+
+    <div class="checkin-title">
+
+        CHECK-IN
+
+    </div>
+
+
+    <!-- =====================================
+         CAMERA
+    ====================================== -->
+
+    <div class="scanner-container">
+
+        <div id="qr-reader"></div>
+
+    </div>
+
+
+    <div class="scan-instruction">
+
+        ALIGN QR CODE WITH THE FRAME
+
+    </div>
+
+
+    <!-- =====================================
+         STATUS
+    ====================================== -->
+
+    <div id="status"
+         class="status-box ready">
+
+        WAITING FOR SCAN...
+
+    </div>
+
+
+</div>
+
+
+
 <script>
 
-const status = document.getElementById("status");
+/* ==========================================
+   ELEMENTS
+========================================== */
+
+const status =
+    document.getElementById("status");
+
 
 let qrScanner = null;
+
 let qrProcessing = false;
+
+
+
+/* ==========================================
+   APPS SCRIPT URL
+========================================== */
+
+const scriptUrl =
+    "https://script.google.com/macros/s/AKfycbxmydgn03NnglkCd7rDT6jpsiSeodtA0GLKownRZ_lxZV81cp15Ng3qx72oh_WTrtaSGg/exec";
+
+
+
+/* ==========================================
+   SCAN SUCCESS
+========================================== */
 
 function onScanSuccess(decodedText, decodedResult) {
 
-    if (qrProcessing) return;
+
+    if (qrProcessing) {
+
+        return;
+
+    }
+
 
     qrProcessing = true;
 
-    console.log("QR CODE DETECTED:", decodedText);
+
+    console.log(
+        "QR CODE DETECTED:",
+        decodedText
+    );
+
+
+    status.className =
+        "status-box ready";
+
 
     status.innerHTML =
-        "CHECKING: " + decodedText;
+        "CHECKING...<br><br>" +
+        decodedText;
 
 
-    // ==========================================
-    // GOOGLE APPS SCRIPT API
-    // ==========================================
 
-    const scriptUrl =
-        "https://script.google.com/macros/s/AKfycbxmydgn03NnglkCd7rDT6jpsiSeodtA0GLKownRZ_lxZV81cp15Ng3qx72oh_WTrtaSGg/exec";
-
+    /* ======================================
+       BUILD API URL
+    ====================================== */
 
     const apiUrl =
+
         scriptUrl +
+
         "?api=checkin" +
-        "&code=" + encodeURIComponent(decodedText);
+
+        "&code=" +
+
+        encodeURIComponent(decodedText);
 
 
-    console.log("API URL:", apiUrl);
+
+    console.log(
+        "API URL:",
+        apiUrl
+    );
 
 
-    // ==========================================
-    // JSONP CALLBACK
-    // ==========================================
+
+    /* ======================================
+       JSONP CALLBACK
+    ====================================== */
 
     const callbackName =
-        "checkInCallback_" + Date.now();
+
+        "checkInCallback_" +
+
+        Date.now();
 
 
-    window[callbackName] = function(result) {
 
-        console.log("CHECK-IN RESULT:", result);
+    window[callbackName] =
+
+        function(result) {
 
 
-        if (result.success) {
+            console.log(
+                "CHECK-IN RESULT:",
+                result
+            );
 
-    status.innerHTML =
-        "✅ CHECK-IN SUCCESSFUL" +
-        "<br><br>" +
-        "<strong>" +
-        result.attendee.name +
-        "</strong>" +
-        "<br>" +
-        "Code: " +
-        result.attendee.code +
-        "<br>" +
-        "Payment: " +
-        result.attendee.paymentStatus +
-        (
-            result.attendee.specialAssistance
-                ? "<br>Special Assistance: " +
-                  result.attendee.specialAssistance
-                : ""
-        ) +
-        "<br>" +
-        "Time: " +
-        result.attendee.checkInTime;
 
-} else {
+            /* =================================
+               SUCCESS
+            ================================= */
 
-            status.innerHTML =
-                "❌ " + result.message;
+            if (result.success) {
 
-            if (result.attendee) {
 
-                status.innerHTML +=
-                    "<br><br>" +
-                    "<strong>" +
+                status.className =
+                    "status-box success";
+
+
+                let html =
+
+                    "✅ CHECK-IN SUCCESSFUL" +
+
+                    "<div class='attendee-name'>" +
+
                     result.attendee.name +
-                    "</strong>";
+
+                    "</div>" +
+
+
+                    "<div class='attendee-info'>" +
+
+                    "Code: " +
+
+                    result.attendee.code +
+
+                    "</div>" +
+
+
+                    "<div class='attendee-info'>" +
+
+                    "Payment: " +
+
+                    result.attendee.paymentStatus +
+
+                    "</div>";
+
+
+
+                /* ===============================
+                   SPECIAL ASSISTANCE
+                =============================== */
+
+                if (
+
+                    result.attendee.specialAssistance &&
+
+                    result.attendee.specialAssistance
+                        .trim() !== "" &&
+
+                    result.attendee.specialAssistance
+                        .toUpperCase() !== "NONE"
+
+                ) {
+
+
+                    html +=
+
+                        "<div class='special-assistance'>" +
+
+                        "Special Assistance: " +
+
+                        result.attendee.specialAssistance +
+
+                        "</div>";
+
+                }
+
+
+
+                /* ===============================
+                   TIME
+                =============================== */
+
+                html +=
+
+                    "<div class='attendee-info'>" +
+
+                    "Time: " +
+
+                    result.attendee.checkInTime +
+
+                    "</div>";
+
+
+                status.innerHTML = html;
+
 
             }
 
-        }
+
+            /* =================================
+               ERROR
+            ================================= */
+
+            else {
 
 
-        qrProcessing = false;
+                status.className =
+                    "status-box error";
 
 
-        // Remove callback
-        delete window[callbackName];
+                let html =
 
-    };
+                    "❌ " +
+
+                    result.message;
 
 
-    // ==========================================
-    // CREATE JSONP SCRIPT
-    // ==========================================
+
+                if (result.attendee) {
+
+
+                    html +=
+
+                        "<div class='attendee-name'>" +
+
+                        result.attendee.name +
+
+                        "</div>";
+
+
+                    if (
+
+                        result.attendee.paymentStatus
+
+                    ) {
+
+
+                        html +=
+
+                            "<div class='attendee-info'>" +
+
+                            "Payment: " +
+
+                            result.attendee.paymentStatus +
+
+                            "</div>";
+
+                    }
+
+                }
+
+
+                status.innerHTML = html;
+
+            }
+
+
+
+            /* =================================
+               ALLOW NEXT SCAN
+            ================================= */
+
+            setTimeout(function() {
+
+                qrProcessing = false;
+
+            }, 1500);
+
+
+
+            /* =================================
+               RESTART CAMERA
+            ================================= */
+
+            startQRScanner();
+
+
+            delete window[callbackName];
+
+        };
+
+
+
+    /* ======================================
+       JSONP SCRIPT
+    ====================================== */
 
     const script =
         document.createElement("script");
 
 
     script.src =
+
         apiUrl +
+
         "&callback=" +
+
         callbackName;
 
 
+
     script.onerror = function() {
+
 
         console.error(
             "Unable to connect to Apps Script."
         );
 
+
+        status.className =
+            "status-box error";
+
+
         status.innerHTML =
             "❌ CONNECTION ERROR";
 
+
         qrProcessing = false;
+
 
         delete window[callbackName];
 
@@ -158,53 +805,88 @@ function onScanSuccess(decodedText, decodedResult) {
     document.body.appendChild(script);
 
 
-    // ==========================================
-    // STOP CAMERA
-    // ==========================================
 
-    qrScanner.stop()
-        .then(function() {
+    /* ======================================
+       STOP CAMERA
+    ====================================== */
 
-            console.log("QR scanner stopped.");
+    if (qrScanner) {
 
-        })
-        .catch(function(error) {
 
-            console.log(
-                "Scanner stop error:",
-                error
-            );
+        qrScanner.stop()
 
-        });
+            .then(function() {
+
+                console.log(
+                    "QR scanner stopped."
+                );
+
+            })
+
+            .catch(function(error) {
+
+                console.log(
+                    "Scanner stop error:",
+                    error
+                );
+
+            });
+
+    }
 
 }
 
+
+
+/* ==========================================
+   SCAN FAILURE
+========================================== */
 
 function onScanFailure(errorMessage) {
 
-    // Ignore normal QR detection failures.
-    // The scanner continues searching.
+    // Normal scanning failures are ignored.
 
 }
 
 
+
+/* ==========================================
+   START SCANNER
+========================================== */
+
 function startQRScanner() {
 
-    console.log("Starting QR scanner...");
 
-    // Make sure the library loaded
-    if (typeof Html5Qrcode === "undefined") {
+    console.log(
+        "Starting QR scanner..."
+    );
+
+
+    if (
+
+        typeof Html5Qrcode ===
+        "undefined"
+
+    ) {
+
+
+        status.className =
+            "status-box error";
+
 
         status.innerHTML =
-            "QR LIBRARY FAILED TO LOAD";
+            "❌ QR LIBRARY FAILED TO LOAD";
 
-        console.error("Html5Qrcode is not available.");
 
         return;
+
     }
 
 
-    qrScanner = new Html5Qrcode("qr-reader");
+
+    qrScanner =
+        new Html5Qrcode("qr-reader");
+
 
 
     const config = {
@@ -212,16 +894,22 @@ function startQRScanner() {
         fps: 10,
 
         qrbox: {
+
             width: 250,
+
             height: 250
+
         }
 
     };
 
 
+
     qrScanner.start(
 
-        { facingMode: "environment" },
+        {
+            facingMode: "environment"
+        },
 
         config,
 
@@ -230,36 +918,66 @@ function startQRScanner() {
         onScanFailure
 
     )
+
     .then(function() {
 
-        console.log("QR CAMERA STARTED");
+
+        console.log(
+            "QR CAMERA STARTED"
+        );
+
+
+        status.className =
+            "status-box ready";
+
 
         status.innerHTML =
-            "READY — SCAN QR CODE";
+            "WAITING FOR SCAN...";
+
 
     })
+
     .catch(function(error) {
+
 
         console.error(
             "FULL QR CAMERA ERROR:",
             error
         );
 
+
+        status.className =
+            "status-box error";
+
+
         status.innerHTML =
-            "CAMERA ERROR: " + error;
+
+            "CAMERA ERROR: " +
+
+            "Please allow camera access.";
 
     });
 
 }
 
 
-window.addEventListener("load", function() {
 
-    startQRScanner();
+/* ==========================================
+   START WHEN PAGE LOADS
+========================================== */
 
-});
+window.addEventListener(
+    "load",
+    function() {
+
+        startQRScanner();
+
+    }
+);
 
 </script>
 
+
 </body>
+
 </html>
