@@ -76,23 +76,29 @@ function onScanSuccess(decodedText, decodedResult) {
 
         if (result.success) {
 
-            status.innerHTML =
-                "✅ CHECK-IN SUCCESSFUL" +
-                "<br><br>" +
-                "<strong>" +
-                result.attendee.name +
-                "</strong>" +
-                "<br>" +
-                "Code: " +
-                result.attendee.code +
-                "<br>" +
-                "Payment: " +
-                result.attendee.paymentStatus +
-                "<br>" +
-                "Time: " +
-                result.attendee.checkInTime;
+    status.innerHTML =
+        "✅ CHECK-IN SUCCESSFUL" +
+        "<br><br>" +
+        "<strong>" +
+        result.attendee.name +
+        "</strong>" +
+        "<br>" +
+        "Code: " +
+        result.attendee.code +
+        "<br>" +
+        "Payment: " +
+        result.attendee.paymentStatus +
+        (
+            result.attendee.specialAssistance
+                ? "<br>Special Assistance: " +
+                  result.attendee.specialAssistance
+                : ""
+        ) +
+        "<br>" +
+        "Time: " +
+        result.attendee.checkInTime;
 
-        } else {
+} else {
 
             status.innerHTML =
                 "❌ " + result.message;
