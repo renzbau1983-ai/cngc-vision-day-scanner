@@ -739,7 +739,7 @@ const countdownProgress =
         countdownNumber.textContent = seconds;
 
         const progress =
-    (circumference * seconds) / 6;
+    circumference * (1 - seconds / 6);
 
 countdownProgress.style.strokeDashoffset =
     progress;
