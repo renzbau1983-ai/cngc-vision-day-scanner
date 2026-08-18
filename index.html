@@ -41,19 +41,136 @@ function onScanSuccess(decodedText, decodedResult) {
     console.log("QR CODE DETECTED:", decodedText);
 
     status.innerHTML =
-        "QR DETECTED: " + decodedText;
+        "CHECKING: " + decodedText;
+
+
+    // ==========================================
+    // GOOGLE APPS SCRIPT API
+    // ==========================================
+
+    const scriptUrl =
+        "https://script.google.com/macros/s/AKfycbxmydgn03NnglkCd7rDT6jpsiSeodtA0GLKownRZ_lxZV81cp15Ng3qx72oh_WTrtaSGg/exec";
+
+
+    const apiUrl =
+        scriptUrl +
+        "?api=checkin" +
+        "&code=" + encodeURIComponent(decodedText);
+
+
+    console.log("API URL:", apiUrl);
+
+
+    // ==========================================
+    // JSONP CALLBACK
+    // ==========================================
+
+    const callbackName =
+        "checkInCallback_" + Date.now();
+
+
+    window[callbackName] = function(result) {
+
+        console.log("CHECK-IN RESULT:", result);
+
+
+        if (result.success) {
+
+            status.innerHTML =
+                "✅ CHECK-IN SUCCESSFUL" +
+                "<br><br>" +
+                "<strong>" +
+                result.attendee.name +
+                "</strong>" +
+                "<br>" +
+                "Code: " +
+                result.attendee.code +
+                "<br>" +
+                "Payment: " +
+                result.attendee.paymentStatus +
+                "<br>" +
+                "Time: " +
+                result.attendee.checkInTime;
+
+        } else {
+
+            status.innerHTML =
+                "❌ " + result.message;
+
+            if (result.attendee) {
+
+                status.innerHTML +=
+                    "<br><br>" +
+                    "<strong>" +
+                    result.attendee.name +
+                    "</strong>";
+
+            }
+
+        }
+
+
+        qrProcessing = false;
+
+
+        // Remove callback
+        delete window[callbackName];
+
+    };
+
+
+    // ==========================================
+    // CREATE JSONP SCRIPT
+    // ==========================================
+
+    const script =
+        document.createElement("script");
+
+
+    script.src =
+        apiUrl +
+        "&callback=" +
+        callbackName;
+
+
+    script.onerror = function() {
+
+        console.error(
+            "Unable to connect to Apps Script."
+        );
+
+        status.innerHTML =
+            "❌ CONNECTION ERROR";
+
+        qrProcessing = false;
+
+        delete window[callbackName];
+
+    };
+
+
+    document.body.appendChild(script);
+
+
+    // ==========================================
+    // STOP CAMERA
+    // ==========================================
 
     qrScanner.stop()
         .then(function() {
 
-            console.log("QR scanner stopped");
+            console.log("QR scanner stopped.");
 
         })
         .catch(function(error) {
 
-            console.log("Scanner stop error:", error);
+            console.log(
+                "Scanner stop error:",
+                error
+            );
 
         });
+
 }
 
 
