@@ -292,6 +292,89 @@ body {
 
 }
 
+/* ==========================================
+   MANUAL CODE ENTRY
+========================================== */
+
+.manual-entry {
+
+    width: 90%;
+    max-width: 800px;
+
+    margin: 20px auto 0;
+
+    text-align: center;
+
+}
+
+.manual-title {
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    color: #555;
+
+    margin-bottom: 10px;
+
+}
+
+.manual-row {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+}
+
+#manualCode {
+
+    flex: 1;
+
+    max-width: 500px;
+
+    padding: 15px;
+
+    border: 2px solid #333;
+
+    border-radius: 10px;
+
+    font-size: 20px;
+
+    text-align: center;
+
+    text-transform: uppercase;
+
+}
+
+.manual-row button {
+
+    padding: 15px 25px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #c00000;
+
+    color: white;
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+.manual-row button:hover {
+
+    opacity: 0.85;
+
+}
+
 
 /* ==========================================
    MOBILE
@@ -456,6 +539,35 @@ body {
         ALIGN QR CODE WITH THE FRAME
 
     </div>
+
+<!-- =====================================
+     MANUAL CODE ENTRY
+====================================== -->
+
+<div class="manual-entry">
+
+    <div class="manual-title">
+        QR CODE NOT READ?
+    </div>
+
+    <div class="manual-row">
+
+        <input
+            type="text"
+            id="manualCode"
+            placeholder="Enter Attendee Code"
+            autocomplete="off"
+        >
+
+        <button
+            type="button"
+            onclick="manualCheckIn()">
+            CHECK-IN
+        </button>
+
+    </div>
+
+</div>
 
 
     <!-- =====================================
@@ -830,6 +942,58 @@ function onScanSuccess(decodedText, decodedResult) {
     }
 
 }
+
+ /* ==========================================
+   MANUAL CHECK-IN
+========================================== */
+
+function manualCheckIn() {
+
+    const input =
+        document.getElementById("manualCode");
+
+    const code =
+        input.value.trim().toUpperCase();
+
+    if (!code) {
+
+        status.className =
+            "status-box error";
+
+        status.innerHTML =
+            "❌ PLEASE ENTER ATTENDEE CODE";
+
+        input.focus();
+
+        return;
+
+    }
+
+    console.log(
+        "MANUAL CODE ENTERED:",
+        code
+    );
+
+    // Use the exact same check-in process
+    // used by the QR scanner.
+
+    onScanSuccess(code, null);
+
+}
+
+      document
+    .getElementById("manualCode")
+    .addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+
+            event.preventDefault();
+
+            manualCheckIn();
+
+        }
+
+    });
 
 
 
