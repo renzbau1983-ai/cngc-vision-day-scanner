@@ -251,6 +251,13 @@ body {
 
 }
 
+      .already-checked-in {
+    color: #d97706;
+    font-weight: 700;
+    background: #fff7e6;
+    border-color: #d97706;
+}
+
 
 /* ==========================================
    ATTENDEE INFORMATION
@@ -982,15 +989,31 @@ function onScanSuccess(decodedText, decodedResult) {
             else {
 
 
-                status.className =
-                    "status-box error";
+               if (
+    result.message &&
+    result.message.toUpperCase().includes("ALREADY")
+) {
+
+    status.className =
+        "status-box already-checked-in";
+
+} else {
+
+    status.className =
+        "status-box error";
+
+}
 
 
-                let html =
+                let icon =
+    result.message &&
+    result.message.toUpperCase().includes("ALREADY")
+        ? "⚠️ "
+        : "❌ ";
 
-                    "❌ " +
-
-                    result.message;
+let html =
+    icon +
+    result.message;
 
 
 
