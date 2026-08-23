@@ -1051,7 +1051,7 @@ let html =
 
     "Previous Check-In: " +
 
-    result.attendee.checkInTime +
+    new Date(result.attendee.checkInTime).toLocaleString() +
 
     "</div>";
 
