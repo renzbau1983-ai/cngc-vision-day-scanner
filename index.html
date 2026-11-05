@@ -1170,39 +1170,29 @@ let html =
    MANUAL CHECK-IN
 ========================================== */
 
+
 function manualCheckIn() {
 
-    const input =
-        document.getElementById("manualCode");
+    const input = document.getElementById("manualCode");
 
-    const code =
-        input.value.trim().toUpperCase();
+    const code = input.value.trim().toUpperCase();
 
     if (!code) {
-
-        status.className =
-            "status-box error";
-
-        status.innerHTML =
-            "❌ PLEASE ENTER ATTENDEE CODE";
-
+        status.className = "status-box error";
+        status.innerHTML = "❌ PLEASE ENTER ATTENDEE CODE";
         input.focus();
-
         return;
-
     }
 
-    console.log(
-        "MANUAL CODE ENTERED:",
-        code
-    );
+    console.log("MANUAL CODE ENTERED:", code);
 
-    // Use the exact same check-in process
-    // used by the QR scanner.
+    // CLEAR TEXTBOX
+    input.value = "";
 
+    // PROCESS CHECK-IN
     onScanSuccess(code, null);
-
 }
+
 
       document
     .getElementById("manualCode")
