@@ -786,16 +786,20 @@ countdownProgress.style.strokeDashoffset =
 
     countdownProgress.style.strokeDashoffset = "0";
 
-    status.className =
-        "status-box ready";
+    // CLEAR THE ATTENDEE CODE FIELD
+    const input = document.getElementById("manualCode");
+    input.value = "";
 
-    status.innerHTML =
-        "WAITING FOR SCAN...";
+    // RETURN CURSOR TO THE INPUT FIELD
+    input.focus();
+
+    status.className = "status-box ready";
+
+    status.innerHTML = "WAITING FOR SCAN...";
 
     qrProcessing = false;
 
     startQRScanner();
-
 }
 
 
